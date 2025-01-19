@@ -1,8 +1,15 @@
+using System;
 using UnityEngine;
 
 public class thirdpersonmovement : MonoBehaviour
 {
     public float moveSpeed;
+
+    public float playerHeight;
+    public float groundDrag;
+    public LayerMask whatIsGround;
+
+    bool grounded;
     public Transform orientation;
 
     float horizontalInput;
@@ -20,7 +27,14 @@ public class thirdpersonmovement : MonoBehaviour
 
     private void Update()
     {
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        
         MyInput();
+
+        if (grounded)
+            rb.linearDamping = groundDrag;
+        else
+            rb.linearDamping = 0;
     }
 
     private void FixedUpdate()
